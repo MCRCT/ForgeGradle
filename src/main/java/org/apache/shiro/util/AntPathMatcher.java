@@ -18,7 +18,7 @@
  */
 package org.apache.shiro.util;
 
-import net.minecraftforge.gradle.StringUtils;
+import ch.minecraftreunitedcollaborationteam.gradle.StringUtils;
 
 /**
  * <p>

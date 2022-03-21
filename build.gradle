@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r'
+        classpath 'org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r'
     }
 }
 
@@ -19,11 +19,19 @@ project.ext {
     OLD_FORMAT = '1.2-SNAPSHOT'
 }
 
-group = 'net.minecraftforge.gradle'
-version = "${project.ext.GIT_INFO.tag}.${project.ext.GIT_INFO.offset}"
+def getDate() {
+    return new Date().format('yyyyMMdd')
+}
+
+def getTime() {
+    return new Date().format('HHmmss')
+}
+
+group = 'ch.minecraftreunitedcollaborationteam.gradle'
+version = "1.2"
 archivesBaseName = 'ForgeGradle'
-targetCompatibility = '1.6'
-sourceCompatibility = '1.6'
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
 
 repositories {
     mavenLocal()
@@ -56,24 +64,24 @@ dependencies {
     compile gradleApi()
     
     // moved to the beginning to be the overrider
-    compile 'org.ow2.asm:asm-debug-all:5.0.3'
-    compile 'com.google.guava:guava:18.0'
+    compile 'org.ow2.asm:asm-debug-all:6.0_BETA'
+    compile 'com.google.guava:guava:23.0'
 
     compile 'net.sf.opencsv:opencsv:2.3' // reading CSVs.. also used by SpecialSource
-    compile 'com.cloudbees:diff4j:1.1' // for difing and patching
-    compile 'com.github.abrarsyed.jastyle:jAstyle:1.2' // formatting
+    compile 'com.cloudbees:diff4j:1.3' // for difing and patching
+    compile 'com.github.abrarsyed.jastyle:jAstyle:1.3' // formatting
     compile 'net.sf.trove4j:trove4j:2.1.0' // because its awesome.
     
     compile 'com.github.jponge:lzma-java:1.3' // replaces the LZMA binary
     compile 'com.nothome:javaxdelta:2.0.1' // GDIFF implementation for BinPatches
-    compile 'com.google.code.gson:gson:2.2.4' // Used instead of Argo for buuilding changelog.
-    compile 'com.github.tony19:named-regexp:0.2.3' // 1.7 Named regexp features
+    compile 'com.google.code.gson:gson:2.9.0' // Used instead of Argo for buuilding changelog.
+    compile 'com.github.tony19:named-regexp:0.2.6' // 1.7 Named regexp features
     
-    compile 'net.md-5:SpecialSource:1.7.3' // deobf and reobs
+    compile 'net.md-5:SpecialSource:1.7.4' // deobf and reobs
     
     // because curse
-    compile 'org.apache.httpcomponents:httpclient:4.3.3'
-    compile 'org.apache.httpcomponents:httpmime:4.3.3'
+    compile 'org.apache.httpcomponents:httpclient:4.5.13'
+    compile 'org.apache.httpcomponents:httpmime:4.5.13'
     
     // mcp stuff
     compile 'de.oceanlabs.mcp:RetroGuard:3.6.6'
@@ -81,12 +89,12 @@ dependencies {
     shade 'net.minecraftforge.srg2source:Srg2Source:3.2-SNAPSHOT'
 
     // The old version used by S2S is gone, so we need to force the latest build of that minor release
-    shade('org.eclipse.jdt:org.eclipse.jdt.core:3.10.0.v20140604-1726') {
+    shade('org.eclipse.jdt:org.eclipse.jdt.core:3.29.0') {
         force = true
     }
 
     // stupid maven
-    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.12"
     
     //Stuff used in the GradleStart classes
     compileOnly 'com.mojang:authlib:1.5.16'
@@ -102,6 +110,8 @@ compileJava {
 }
 
 javadoc {
+    version = project.version + "-" + getDate() + "." + getTime() + "-" + "306"
+
     classpath += configurations.compileOnly
 
     // linked javadoc urls.. why not...
@@ -138,7 +148,7 @@ jar {
     manifest {
         attributes 'version':project.version, 'javaCompliance': project.targetCompatibility
         attributes 'group':project.group
-        attributes 'Implementation-Version': project.version + "-" + GIT_INFO.hash
+        attributes 'Implementation-Version': project.version
     }
 }
 
