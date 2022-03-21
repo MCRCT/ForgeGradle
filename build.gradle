@@ -110,7 +110,7 @@ compileJava {
 }
 
 javadoc {
-    version = project.version + "-" + getDate() + "." + getTime() + "-" + "306"
+    version = project.version + "-" + getDate() + "." + getTime() + "-" + "754"
 
     classpath += configurations.compileOnly
 
