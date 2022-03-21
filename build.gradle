@@ -28,7 +28,7 @@ def getTime() {
 }
 
 group = 'ch.minecraftreunitedcollaborationteam.gradle'
-version = "1.2"
+version = "${project.ext.GIT_INFO.tag}.${project.ext.GIT_INFO.offset}"
 archivesBaseName = 'ForgeGradle'
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
@@ -110,8 +110,6 @@ compileJava {
 }
 
 javadoc {
-    version = project.version + "-" + getDate() + "." + getTime() + "-" + "306"
-
     classpath += configurations.compileOnly
 
     // linked javadoc urls.. why not...
@@ -148,7 +146,7 @@ jar {
     manifest {
         attributes 'version':project.version, 'javaCompliance': project.targetCompatibility
         attributes 'group':project.group
-        attributes 'Implementation-Version': project.version
+        attributes 'Implementation-Version': project.version  + "-" + GIT_INFO.hash
     }
 }
 
